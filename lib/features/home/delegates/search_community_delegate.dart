@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/core/common/error.dart';
+import 'package:reddit_clone/core/common/loader.dart';
+import 'package:reddit_clone/features/community/controller/community_controler.dart';
+
+import 'package:routemaster/routemaster.dart';
+
+class SearchCommunitydelegates extends SearchDelegate {
+  final WidgetRef ref;
+
+  SearchCommunitydelegates(this.ref);
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        onPressed: () {
+          query = '';
+        },
+        icon: const Icon(Icons.close),
+      )
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return const SizedBox();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    return ref.watch(searchCommunityProvider(query)).when(
+          data: (data) => ListView.builder(
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              final community = data[index];
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(community.avatar),
+                ),
+                title: Text('r/${community.name}'),
+                onTap: () =>
+                    navigateToCommmunityScreen(context, community.name),
+              );
+            },
+          ),
+          error: (error, stackTrace) => Errortext(e: error.toString()),
+          loading: () => const Loader(),
+        );
+  }
+
+  void navigateToCommmunityScreen(BuildContext context, String communityName) {
+    Routemaster.of(context).push("/r/$communityName");
+  }
+}
