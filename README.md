@@ -64,3 +64,4 @@ After cloning this repository, migrate to `flutter-reddit-clone` folder. Then, f
 If you have any feedback, please reach out to me at tanjim437@gmail.com
 
 <h2>Must Reset firebase config and reconfig before using</h2>
+<p>Follow this link : https://stackoverflow.com/questions/70844655/how-to-de-configure-flutterfire</p>
