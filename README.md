@@ -62,3 +62,5 @@ After cloning this repository, migrate to `flutter-reddit-clone` folder. Then, f
 ## Feedback
 
 If you have any feedback, please reach out to me at tanjim437@gmail.com
+
+**Must Reset firebase config and reconfig
