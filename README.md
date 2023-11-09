@@ -31,9 +31,9 @@ I have put video about all my project here [WittyWidget](https://www.youtube.com
 
 <h2>🚀 App Preview</h2>
 
-<!-- [![Video](https://img.youtube.com/vi/vuGF1sW_yiI/maxresdefault.jpg)](https://www.youtube.com/watch?v=vuGF1sW_yiI) -->
+ [![Video](https://img.youtube.com/vi/jE544iUCEBQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=jE544iUCEBQ)
 
-[Watch the Video](https://youtu.be/vuGF1sW_yiI)
+[Watch the Video](https://youtu.be/jE544iUCEBQ)
 
 ## Installation
 
