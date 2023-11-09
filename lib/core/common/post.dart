@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:reddit_clone/core/Constant/constant.dart';
 import 'package:reddit_clone/core/common/error.dart';
 import 'package:reddit_clone/core/common/loader.dart';
+import 'package:reddit_clone/core/common/signinbutton.dart';
 import 'package:reddit_clone/features/auth/controler/auth_controler.dart';
 import 'package:reddit_clone/features/community/controller/community_controler.dart';
 import 'package:reddit_clone/features/post/controller/post_controller.dart';
@@ -57,6 +58,7 @@ class PostCard extends ConsumerWidget {
     final isTypeText = post.type == 'Text';
     final currentTheme = ref.watch(themeNotifierProvider);
     final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Column(
       children: [
         Padding(
@@ -157,12 +159,29 @@ class PostCard extends ConsumerWidget {
                                 ),
                                 if (post.uid == user.uid)
                                   IconButton(
-                                    onPressed: () {
-                                      if (post.type == "Image") {
-                                        deletePhoto(ref, context);
-                                      }
-                                      deletePost(ref, context);
-                                    },
+                                    onPressed: isGuest
+                                        ? () {
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) => Dialog(
+                                                backgroundColor: Colors.grey
+                                                    .withOpacity(0.1),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                ),
+                                                child: const SizedBox(
+                                                  child: SignButton(),
+                                                ),
+                                              ),
+                                            );
+                                          }
+                                        : () {
+                                            if (post.type == "Image") {
+                                              deletePhoto(ref, context);
+                                            }
+                                            deletePost(ref, context);
+                                          },
                                     icon: Icon(
                                       Icons.delete,
                                       color: Pallete.redColor,
@@ -229,7 +248,25 @@ class PostCard extends ConsumerWidget {
                                 Row(
                                   children: [
                                     IconButton(
-                                      onPressed: () => upvotePost(ref),
+                                      onPressed: isGuest
+                                          ? () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => Dialog(
+                                                  backgroundColor: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: const SizedBox(
+                                                    child: SignButton(),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          : () => upvotePost(ref),
                                       icon: Icon(
                                         Constants.up,
                                         size: 25,
@@ -243,7 +280,25 @@ class PostCard extends ConsumerWidget {
                                       style: const TextStyle(fontSize: 17),
                                     ),
                                     IconButton(
-                                      onPressed: () => downvotePost(ref),
+                                      onPressed: isGuest
+                                          ? () {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) => Dialog(
+                                                  backgroundColor: Colors.grey
+                                                      .withOpacity(0.1),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: const SizedBox(
+                                                    child: SignButton(),
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          : () => downvotePost(ref),
                                       icon: Icon(
                                         Constants.down,
                                         size: 25,
@@ -286,12 +341,33 @@ class PostCard extends ConsumerWidget {
                                       data: (data) {
                                         if (data.mods.contains(user.uid)) {
                                           return IconButton(
-                                            onPressed: () {
-                                              if (post.type == "Image") {
-                                                deletePhoto(ref, context);
-                                              }
-                                              deletePost(ref, context);
-                                            },
+                                            onPressed: isGuest
+                                                ? () {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (context) =>
+                                                          Dialog(
+                                                        backgroundColor: Colors
+                                                            .grey
+                                                            .withOpacity(0.1),
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10),
+                                                        ),
+                                                        child: const SizedBox(
+                                                          child: SignButton(),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  }
+                                                : () {
+                                                    if (post.type == "Image") {
+                                                      deletePhoto(ref, context);
+                                                    }
+                                                    deletePost(ref, context);
+                                                  },
                                             icon: const Icon(
                                               Icons
                                                   .admin_panel_settings_rounded,
@@ -307,52 +383,77 @@ class PostCard extends ConsumerWidget {
                                       loading: () => const Loader(),
                                     ),
                                 IconButton(
-                                  onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) => Dialog(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(20),
-                                          child: GridView.builder(
-                                            gridDelegate:
-                                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                                    crossAxisCount: 6),
-                                            shrinkWrap: true,
-                                            scrollDirection: Axis.vertical,
-                                            itemCount: user.awards.isEmpty
-                                                ? 1
-                                                : user.awards.length,
-                                            itemBuilder: (context, index) {
-                                              final awards = user.awards.isEmpty
-                                                  ? ""
-                                                  : user.awards[index];
-                                              // print(user.awards[index]);
+                                  onPressed: isGuest
+                                      ? () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                              backgroundColor:
+                                                  Colors.grey.withOpacity(0.1),
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10),
+                                              ),
+                                              child: const SizedBox(
+                                                child: SignButton(),
+                                              ),
+                                            ),
+                                          );
+                                        }
+                                      : () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => Dialog(
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(20),
+                                                child: GridView.builder(
+                                                  gridDelegate:
+                                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                                          crossAxisCount: 6),
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.vertical,
+                                                  itemCount: user.awards.isEmpty
+                                                      ? 1
+                                                      : user.awards.length,
+                                                  itemBuilder:
+                                                      (context, index) {
+                                                    final awards = user
+                                                            .awards.isEmpty
+                                                        ? ""
+                                                        : user.awards[index];
+                                                    // print(user.awards[index]);
 
-                                              return user.awards.isEmpty
-                                                  ? const Center(
-                                                      child: Text("Empty"))
-                                                  : Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              5.0),
-                                                      child: InkWell(
-                                                        onTap: () => awardPost(
-                                                            ref,
-                                                            awards,
-                                                            context),
-                                                        child: Image.asset(
-                                                          Constants
-                                                              .awards[awards]!,
-                                                        ),
-                                                      ),
-                                                    );
-                                              // return SizedBox();
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                                    return user.awards.isEmpty
+                                                        ? const Center(
+                                                            child:
+                                                                Text("Empty"))
+                                                        : Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(5.0),
+                                                            child: InkWell(
+                                                              onTap: () =>
+                                                                  awardPost(
+                                                                      ref,
+                                                                      awards,
+                                                                      context),
+                                                              child:
+                                                                  Image.asset(
+                                                                Constants
+                                                                        .awards[
+                                                                    awards]!,
+                                                              ),
+                                                            ),
+                                                          );
+                                                    // return SizedBox();
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                   icon: const Icon(Icons.card_giftcard_rounded),
                                 )
                               ],

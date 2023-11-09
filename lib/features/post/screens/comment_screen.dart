@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/common/error.dart';
 import 'package:reddit_clone/core/common/loader.dart';
 import 'package:reddit_clone/core/common/post.dart';
+import 'package:reddit_clone/core/common/signinbutton.dart';
+import 'package:reddit_clone/features/auth/controler/auth_controler.dart';
 import 'package:reddit_clone/features/post/controller/post_controller.dart';
 import 'package:reddit_clone/features/post/widgets/comment_card.dart';
 import 'package:reddit_clone/models/post_model.dart';
@@ -59,6 +61,8 @@ class _CommentScreenState extends ConsumerState<CommentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
     return Scaffold(
       appBar: AppBar(),
       body: ref.watch(getPostByIDProvider(widget.postid)).when(
@@ -107,46 +111,50 @@ class _CommentScreenState extends ConsumerState<CommentScreen> {
                                       return Errortext(e: error.toString());
                                     },
                                     loading: () => const Loader(),
-                                  )
+                                  ),
+                              isGuest
+                                  ? const SizedBox(
+                                      child: SignButton(),
+                                    )
+                                  : showTextField
+                                      ? SizedBox(
+                                          child: TextField(
+                                            onSubmitted: (value) =>
+                                                addComment(data),
+                                            decoration: InputDecoration(
+                                              border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              fillColor: Colors.grey,
+                                              focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                              ),
+                                              hintText:
+                                                  "What are your thoughts?",
+                                              hintStyle: const TextStyle(
+                                                  color: Colors.black),
+                                              filled: true,
+                                              suffixIcon: IconButton(
+                                                onPressed: () =>
+                                                    addComment(data),
+                                                icon: const Icon(
+                                                  Icons.send,
+                                                  color: Colors.black,
+                                                  size: 30,
+                                                ),
+                                              ),
+                                            ),
+                                            controller: commentControler,
+                                          ),
+                                        )
+                                      : const SizedBox(),
                             ],
                           ),
                         ),
                       ),
                     ),
-                    showTextField
-                        ? Positioned(
-                            bottom: 0,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              // height: 150,
-                              child: TextField(
-                                onSubmitted: (value) => addComment(data),
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  fillColor: Colors.grey,
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  hintText: "What are your thoughts?",
-                                  hintStyle:
-                                      const TextStyle(color: Colors.black),
-                                  filled: true,
-                                  suffixIcon: IconButton(
-                                    onPressed: () => addComment(data),
-                                    icon: const Icon(
-                                      Icons.send,
-                                      color: Colors.black,
-                                      size: 30,
-                                    ),
-                                  ),
-                                ),
-                                controller: commentControler,
-                              ),
-                            ),
-                          )
-                        : const SizedBox(),
                   ],
                 ),
               );

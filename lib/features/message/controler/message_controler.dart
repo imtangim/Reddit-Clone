@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 // import 'package:reddit_clone/core/util.dart';
 import 'package:reddit_clone/features/auth/controler/auth_controler.dart';
 import 'package:reddit_clone/features/message/Repository/message_repo.dart';
@@ -42,16 +41,10 @@ class MessageControler extends StateNotifier<bool> {
       required String recieverProfilepic,
       required String text}) async {
     state = true;
-    // String postId = const Uuid().v1();
-    DateTime now = DateTime.now();
 
     final user = _ref.read(userProvider)!;
 
     // Define a date format pattern
-    String pattern = 'dd-MM-yy HH:mm a';
-    DateFormat format = DateFormat(pattern);
-    String formattedDate = format.format(now);
-    DateTime parsedDate = format.parse(formattedDate);
 
     List<String> ids = [user.uid, recieverUid];
     ids.sort(); //sort the ids( this ensure the chat room id is always same for any pair of people)
@@ -62,7 +55,7 @@ class MessageControler extends StateNotifier<bool> {
       recieverUID: recieverUid,
       message: text,
       chatroomID: chatRoomId,
-      sentAT: parsedDate,
+      sentAT: DateTime.now(),
       senderProfilePic: user.profilepic,
       recieverProfilePic: recieverProfilepic,
     );

@@ -38,10 +38,12 @@ class Pallete {
 
   static var lightModeAppTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: whiteColor,
+    shadowColor: Colors.black,
     cardColor: greyColor,
     appBarTheme: const AppBarTheme(
       backgroundColor: whiteColor,
-      elevation: 0,
+      elevation: 5,
+      shadowColor: Colors.black,
       iconTheme: IconThemeData(
         color: blackColor,
       ),
@@ -51,6 +53,12 @@ class Pallete {
     ),
     primaryColor: redColor,
     backgroundColor: whiteColor,
+    bottomAppBarColor: whiteColor,
+    useMaterial3: true,
+    bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+      backgroundColor: whiteColor,
+      elevation: 5,
+    ),
   );
 }
 

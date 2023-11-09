@@ -4,6 +4,7 @@ import 'package:reddit_clone/core/Constant/constant.dart';
 import 'package:reddit_clone/core/common/error.dart';
 import 'package:reddit_clone/core/common/loader.dart';
 import 'package:reddit_clone/core/common/post.dart';
+import 'package:reddit_clone/core/common/signinbutton.dart';
 import 'package:reddit_clone/features/auth/controler/auth_controler.dart';
 import 'package:reddit_clone/features/user_profile/controller/user_profile_controller.dart';
 import 'package:routemaster/routemaster.dart';
@@ -24,6 +25,8 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
+
+    final isGuest = !user.isAuthenticated;
     return Scaffold(
       body: ref.watch(getuserDataProvider(uid)).when(
             data: (userData) => NestedScrollView(
@@ -50,22 +53,23 @@ class ProfileScreen extends ConsumerWidget {
                             radius: 35,
                           ),
                         ),
-                        Container(
-                          alignment: Alignment.bottomLeft,
-                          padding: const EdgeInsets.all(20),
-                          child: OutlinedButton(
-                            style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                        if (!isGuest)
+                          Container(
+                            alignment: Alignment.bottomLeft,
+                            padding: const EdgeInsets.all(20),
+                            child: OutlinedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 25,
+                                ),
                               ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 25,
-                              ),
+                              onPressed: () => navigateToEditUser(context),
+                              child: const Text("Edit Profile"),
                             ),
-                            onPressed: () => navigateToEditUser(context),
-                            child: const Text("Edit Profile"),
                           ),
-                        ),
                       ],
                     ),
                   ),
@@ -83,13 +87,14 @@ class ProfileScreen extends ConsumerWidget {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            user.uid != uid
-                                ? ElevatedButton(
-                                    onPressed: () =>
-                                        navigateToChat(context, userData.name),
-                                    child: const Text("Message"),
-                                  )
-                                : const SizedBox(),
+                            if (!isGuest)
+                              user.uid != uid
+                                  ? ElevatedButton(
+                                      onPressed: () => navigateToChat(
+                                          context, userData.name),
+                                      child: const Text("Message"),
+                                    )
+                                  : const SizedBox(),
                           ],
                         ),
                         Padding(
@@ -127,25 +132,27 @@ class ProfileScreen extends ConsumerWidget {
                   ),
                 ];
               },
-              body: ref.watch(getUserPostProvider(uid)).when(
-                    data: (data) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          final post = data[index];
-                          return PostCard(
-                            post: post,
-                            clicked: false,
+              body: isGuest
+                  ? const Center(child: SizedBox(child: SignButton()))
+                  : ref.watch(getUserPostProvider(uid)).when(
+                        data: (data) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            itemBuilder: (context, index) {
+                              final post = data[index];
+                              return PostCard(
+                                post: post,
+                                clicked: false,
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    error: (error, stackTrace) {
-                      return Errortext(e: error.toString());
-                    },
-                    loading: () => const Loader(),
-                  ),
+                        error: (error, stackTrace) {
+                          return Errortext(e: error.toString());
+                        },
+                        loading: () => const Loader(),
+                      ),
             ),
             error: (error, stackTrace) {
               return Errortext(e: error.toString());

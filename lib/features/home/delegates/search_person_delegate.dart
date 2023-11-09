@@ -40,13 +40,15 @@ class SearchPersondelegates extends SearchDelegate {
             itemCount: data.length,
             itemBuilder: (context, index) {
               final user = data[index];
-              return ListTile(
-                leading: CircleAvatar(
-                  backgroundImage: NetworkImage(user.profilepic),
-                ),
-                title: Text('u/${user.name}'),
-                onTap: () => navigateToUserScreen(context, user.uid),
-              );
+              return user.isAuthenticated
+                  ? ListTile(
+                      leading: CircleAvatar(
+                        backgroundImage: NetworkImage(user.profilepic),
+                      ),
+                      title: Text('u/${user.name}'),
+                      onTap: () => navigateToUserScreen(context, user.uid),
+                    )
+                  : const SizedBox();
             },
           ),
           error: (error, stackTrace) => Errortext(e: error.toString()),

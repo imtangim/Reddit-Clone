@@ -5,18 +5,15 @@ import 'package:reddit_clone/features/auth/controler/auth_controler.dart';
 import 'package:reddit_clone/theme/pallet.dart';
 
 class SignButton extends ConsumerWidget {
-  const SignButton({super.key});
-  
+  final bool isFromLogin;
+  const SignButton({super.key, this.isFromLogin = true});
 
   void signInWithGoogle(BuildContext context, WidgetRef ref) {
-    ref.read(authControlerProvider.notifier).signInWithGoogle(context);
+    ref.read(authControlerProvider.notifier).signInWithGoogle(context,isFromLogin);
   }
 
   @override
-
   Widget build(BuildContext context, WidgetRef ref) {
-    
-   
     return Padding(
       padding: const EdgeInsets.all(18.0),
       child: ElevatedButton.icon(

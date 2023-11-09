@@ -23,11 +23,6 @@ Future<void> main() async {
   );
 }
 
-String uid = "";
-final rootUidProvider = Provider((ref) {
-  return uid;
-});
-
 class MyApp extends ConsumerStatefulWidget {
   const MyApp({super.key});
 
@@ -43,7 +38,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         .watch(authControlerProvider.notifier)
         .getUserData(data.uid)
         .first;
-
+    
     ref.read(userProvider.notifier).update((state) => userModel);
 
     setState(() {});

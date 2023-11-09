@@ -64,6 +64,7 @@ class ProfileDrawer extends ConsumerWidget {
               value: ref.watch(themeNotifierProvider.notifier).mode ==
                   ThemeMode.dark,
               onChanged: (value) => toggleTheme(ref),
+              
             )
           ],
         ),

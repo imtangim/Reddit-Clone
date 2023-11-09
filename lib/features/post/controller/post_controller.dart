@@ -34,6 +34,12 @@ final userPostProvider = StreamProvider.family(
     return postControler.fetchUserPost(communities);
   },
 );
+final guestPostProvider = StreamProvider(
+  (ref) {
+    final postControler = ref.watch(postControlerProvider.notifier);
+    return postControler.fetchGuestPost();
+  },
+);
 
 final getPostByIDProvider = StreamProvider.family((ref, String postid) {
   final postControler = ref.watch(postControlerProvider.notifier);
@@ -203,6 +209,10 @@ class PostControler extends StateNotifier<bool> {
     } else {
       return Stream.value([]);
     }
+  }
+
+  Stream<List<Post>> fetchGuestPost() {
+    return _postRepository.fetchGuestPosts();
   }
 
   Stream<List<Comments>> fetchPostComment(String postID) {
