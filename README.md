@@ -31,9 +31,9 @@ I have put video about all my project here [WittyWidget](https://www.youtube.com
 
 <h2>🚀 App Preview</h2>
 
-<!-- [![Video](https://img.youtube.com/vi/vuGF1sW_yiI/maxresdefault.jpg)](https://www.youtube.com/watch?v=vuGF1sW_yiI) -->
+ [![Video](https://img.youtube.com/vi/jE544iUCEBQ/maxresdefault.jpg)](https://www.youtube.com/watch?v=jE544iUCEBQ)
 
-[Watch the Video](https://youtu.be/vuGF1sW_yiI)
+[Watch the Video](https://youtu.be/jE544iUCEBQ)
 
 ## Installation
 
@@ -48,7 +48,6 @@ After cloning this repository, migrate to `flutter-reddit-clone` folder. Then, f
 
 ```bash
   flutter pub get
-  open -a simulator (to get iOS Simulator)
   flutter run
   flutter run -d chrome --web-renderer html (to see the best output)
 ```
@@ -62,3 +61,6 @@ After cloning this repository, migrate to `flutter-reddit-clone` folder. Then, f
 ## Feedback
 
 If you have any feedback, please reach out to me at tanjim437@gmail.com
+
+<h2>Must Reset firebase config and reconfig before using</h2>
+<p>Follow this link : https://stackoverflow.com/questions/70844655/how-to-de-configure-flutterfire</p>
